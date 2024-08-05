@@ -98,8 +98,14 @@ realizadas.addEventListener("change", () => {
 });
 
 function filtrarPorBuscador(notas, texto) { 
-    
-    return notas.filter(nota => nota.titulo.toLowerCase().includes(texto) || nota.texto.toLowerCase().includes(texto))   
+    if (filtrarPorFinalizada(notas).length === 0) {
+        actualizarNotas(notas);
+        return notas.filter(nota => nota.titulo.toLowerCase().includes(texto) || nota.texto.toLowerCase().includes(texto))
+    } else {
+        let notasAmostrar = filtrarPorFinalizada(notas);
+        return notasAmostrar.filter(nota => nota.titulo.toLowerCase().includes(texto) || nota.texto.toLowerCase().includes(texto))
+    }
+   
 }
 
 let buscador = document.getElementById("buscador");

@@ -51,7 +51,7 @@ function mostrarNota(nota) {
     card.className = "card d-flex col-3 p-2";
     card.innerHTML = `
         <div class="card-body gap-3 d-flex flex-column align-items-center justify-content-between">
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2 border-bottom border-dark">
                 <input onClick="marcarRealizada(${nota.id})" type="checkbox" ${nota.finalizada? "checked": ""}>
                 <h5 class="card-title">${nota.titulo}</h5>
             </div>

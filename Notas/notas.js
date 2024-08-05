@@ -48,7 +48,7 @@ function agregarNota(titulo, texto) {
 
 function mostrarNota(nota) {
     let card = document.createElement("div");
-    card.className = "card d-flex col-2 p-2";
+    card.className = "card d-flex col-3 p-2";
     card.innerHTML = `
         <div class="card-body gap-3 d-flex flex-column align-items-center justify-content-between">
             <div class="d-flex gap-2">
@@ -66,15 +66,15 @@ function mostrarNota(nota) {
 
 function borrarNota(id) {
     notas = notas.filter(nota => nota.id !== id);
-    actualizarNotas();
+    actualizarNotas(notas);
 }
 
-function actualizarNotas() {
+function actualizarNotas(notasParaMostrar) {
     contenedor.innerHTML = "";
-    if (notas.length === 0) {
+    if (notasParaMostrar.length === 0) {
         contenedor.innerHTML = "<p class='text-center'>NO HAY NOTAS PARA MOSTRAR</p>";
     } else {
-        notas.forEach(nota => mostrarNota(nota));
+        notasParaMostrar.forEach(nota => mostrarNota(nota));
     }
 }
 
@@ -82,10 +82,32 @@ function marcarRealizada(id) {
     let nota = notas.find(nota => nota.id === id);
     if (nota) {   
         nota.finalizada = !nota.finalizada;
-        actualizarNotas();
+        actualizarNotas(notas);
         console.log(nota);
     }
 }
+
+function filtrarPorFinalizada(notas) {
+    return notas.filter(nota => nota.finalizada);
+}
+
+let realizadas = document.getElementById("realizadas");
+realizadas.addEventListener("change", () => {
+    let notasAmostrar = realizadas.checked ? filtrarPorFinalizada(notas) : notas;
+    actualizarNotas(notasAmostrar);
+});
+
+function filtrarPorBuscador(notas, texto) { 
+    
+    return notas.filter(nota => nota.titulo.toLowerCase().includes(texto) || nota.texto.toLowerCase().includes(texto))   
+}
+
+let buscador = document.getElementById("buscador");
+buscador.addEventListener("input", () => {
+    let texto = buscador.value;
+    let notasAmostrar = filtrarPorBuscador(notas, texto);
+    actualizarNotas(notasAmostrar);
+});
 
 document.getElementById("btn").addEventListener("click", () => {
     let titulo = document.querySelector("#form input[type=text]").value;
@@ -95,4 +117,4 @@ document.getElementById("btn").addEventListener("click", () => {
     document.querySelector("#form textarea").value = "";
 });
 
-actualizarNotas();
+actualizarNotas(notas);
